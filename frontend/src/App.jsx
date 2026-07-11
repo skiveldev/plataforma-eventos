@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { createEvent, deleteEvent, getEvents, updateEvent } from './api/eventsApi.js';
+import { createParticipant, getParticipants } from './api/participantsApi.js';
 import EventForm from './EventForm.jsx';
+import ParticipantSection from './components/ParticipantSection.jsx';
 
-export default function App({ loadEvents = getEvents, addEvent = createEvent, editEvent = updateEvent, removeEvent = deleteEvent, confirmDelete = window.confirm }) {
+export default function App({ loadEvents = getEvents, addEvent = createEvent, editEvent = updateEvent, removeEvent = deleteEvent, confirmDelete = window.confirm, loadParticipants = getParticipants, addParticipant = createParticipant }) {
   const [events, setEvents] = useState([]);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('loading');
@@ -53,6 +55,7 @@ export default function App({ loadEvents = getEvents, addEvent = createEvent, ed
       {status === 'error' && <p className="state error" role="alert">We could not load the agenda. Check the API and try again.</p>}
       {status === 'ready' && events.length === 0 && <p className="state">No events match your search.</p>}
        {status === 'ready' && events.length > 0 && <div className="event-grid">{events.map((event) => <article key={event.id} className="event-card"><div className="event-meta"><span>{event.category}</span><time dateTime={event.date}>{new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric' }).format(new Date(event.date))}</time></div><h3>{event.title}</h3><p>{event.description}</p><footer><span>{event.location}</span><span>{event.capacity} places</span></footer><div className="card-actions"><button type="button" disabled={submitting} onClick={() => { setEditing(event); setNotice(null); }}>Edit {event.title}</button><button type="button" className="danger-button" disabled={submitting} onClick={() => handleDelete(event)}>Delete {event.title}</button></div></article>)}</div>}
+      <ParticipantSection loadParticipants={loadParticipants} addParticipant={addParticipant} />
     </main>
     <footer className="site-footer"><strong>AgendaU</strong><span>Built for academic life.</span></footer>
   </>;

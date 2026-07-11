@@ -29,7 +29,7 @@ npm run build         # Vite production build + backend syntax check
 | Layer | Technology |
 |-------|-----------|
 | Frontend | React 19, Vite 7, Vitest + Testing Library |
-| Backend | Express 5, Zod validation, supertest |
+| Backend | Express 5, custom validation, supertest |
 | Persistence | JSON file with serialized read-modify-write |
 | Tooling | npm workspaces, no TypeScript/linter configured |
 

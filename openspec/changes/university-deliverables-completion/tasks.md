@@ -20,7 +20,7 @@ Chain strategy: stacked-to-main
 
 | Unit | Goal | Likely PR | Focused test command | Runtime harness | Rollback boundary |
 |------|------|-----------|----------------------|-----------------|-------------------|
-| 1 | Establish git baseline + README + docs scaffold | PR 1 | `npm test` (25/25 green) | N/A — no app code changed; baseline commit preserves working state | Revert initial commit; no app files affected |
+| 1 | Establish git baseline + README + docs scaffold | PR 1 | `npm test` (25/25 green) | N/A — no app code changed; baseline commit preserves working state | Root commit `ddd1e60` is the non-revertible repository foundation. Later slices roll back to this baseline; removing Slice 1 requires discarding or reinitializing repository history, not reverting an isolated app delta. |
 | 2 | Participant create/list UI + API adapter + StatusPanel | PR 2 | `npm run test -w frontend -- --testNamePattern "participant"` | N/A — prop-injected mock adapters; no live server needed for unit tests | Remove `participantsApi.js`, `StatusPanel.jsx`, `ParticipantSection.jsx`, revert App.jsx/styles.css additions; events baseline unaffected |
 | 3 | Enrollment + attendee sections + error discrimination | PR 3 | `npm run test -w frontend -- --testNamePattern "enrollment\|attendee"` | N/A — prop-injected mocks; race-condition tests use `deferred()` pattern | Remove `EnrollmentSection.jsx`, `AttendeeSection.jsx`, revert App.jsx section mounts + styles; participant UI from PR 2 remains green |
 | 4 | Six FE + six BE evidence screenshots + capture notes | PR 4 | N/A — manual capture of existing test output | `npm run test -w frontend` + `npm run test -w backend` output screenshots | Remove `docs/evidence/` images + notes; no runtime impact |
@@ -29,38 +29,38 @@ Chain strategy: stacked-to-main
 
 ## Phase 1: Git Baseline + Foundation
 
-- [ ] 1.1 Create initial commit capturing the untouched working baseline (all existing source files, `.gitignore`, `openspec/`); verify `npm test` passes 25/25 before commit.
-- [ ] 1.2 Update `README.md` with accurate project description, stack summary, and run/test instructions (no functional changes).
-- [ ] 1.3 Create `docs/` directory scaffold with `.gitkeep`; no content yet.
-- [ ] 1.4 Verify: `git log --oneline` shows baseline commit; `npm test` still 25/25; no app files modified.
+- [x] 1.1 Create initial commit capturing the untouched working baseline (all existing source files, `.gitignore`, `openspec/`); verify `npm test` passes 25/25 before commit.
+- [x] 1.2 Update `README.md` with accurate project description, stack summary, and run/test instructions (no functional changes).
+- [x] 1.3 Create `docs/` directory scaffold with `.gitkeep`; no content yet.
+- [x] 1.4 Verify: `git log --oneline` shows baseline commit; `npm test` still 25/25; no app files modified.
 
 ## Phase 2: Participant UI (Strict TDD — RED → GREEN → REFACTOR)
 
 ### RED Tasks (write failing tests first)
 
-- [ ] 2.1 RED: Write test for `StatusPanel` rendering loading state with spinner, empty state with message, and error state with alert; verify test fails (component does not exist).
-- [ ] 2.2 RED: Write test for `StatusPanel` rendering children when state is `ready`; verify test fails.
-- [ ] 2.3 RED: Write test for `ParticipantSection` loading state on mount; verify test fails (no adapter/component).
-- [ ] 2.4 RED: Write test for `ParticipantSection` displaying empty message when `getParticipants` returns `[]`; verify test fails.
-- [ ] 2.5 RED: Write test for `ParticipantSection` listing participant names/emails on successful load; verify test fails.
-- [ ] 2.6 RED: Write test for `ParticipantSection` API error state when `getParticipants` throws; verify test fails.
-- [ ] 2.7 RED: Write test for `ParticipantSection` form submission calling `addParticipant` with name+email; verify test fails.
-- [ ] 2.8 RED: Write test for `ParticipantSection` form clearing and list updating after successful create; verify test fails.
-- [ ] 2.9 RED: Write test for `ParticipantSection` preserving form fields and showing error on duplicate email (409); verify test fails.
-- [ ] 2.10 RED: Write race-condition test: older list response must not overwrite a successful create (mirror App.test.jsx pattern using `deferred()`); verify test fails.
+- [x] 2.1 RED: Write test for `StatusPanel` rendering loading state with spinner, empty state with message, and error state with alert; verify test fails (component does not exist).
+- [x] 2.2 RED: Write test for `StatusPanel` rendering children when state is `ready`; verify test fails.
+- [x] 2.3 RED: Write test for `ParticipantSection` loading state on mount; verify test fails (no adapter/component).
+- [x] 2.4 RED: Write test for `ParticipantSection` displaying empty message when `getParticipants` returns `[]`; verify test fails.
+- [x] 2.5 RED: Write test for `ParticipantSection` listing participant names/emails on successful load; verify test fails.
+- [x] 2.6 RED: Write test for `ParticipantSection` API error state when `getParticipants` throws; verify test fails.
+- [x] 2.7 RED: Write test for `ParticipantSection` form submission calling `addParticipant` with name+email; verify test fails.
+- [x] 2.8 RED: Write test for `ParticipantSection` form clearing and list updating after successful create; verify test fails.
+- [x] 2.9 RED: Write test for `ParticipantSection` preserving form fields and showing error on duplicate email (409); verify test fails.
+- [x] 2.10 RED: Write race-condition test: older list response must not overwrite a successful create (mirror App.test.jsx pattern using `deferred()`); verify test fails.
 
 ### GREEN Tasks (minimal implementation to pass tests)
 
-- [ ] 2.11 Create `frontend/src/api/participantsApi.js` with `getParticipants()`, `createParticipant({name, email})` using shared `mutate` helper pattern from `eventsApi.js`.
-- [ ] 2.12 Create `frontend/src/components/StatusPanel.jsx` — presentational component accepting `state` (`loading|empty|error|ready`), `emptyMessage`, `errorMessage`, and `children` props.
-- [ ] 2.13 Create `frontend/src/components/ParticipantSection.jsx` with `useEffect` + `useRef` mutationRevision guard, loading/empty/error/ready states, and create form.
-- [ ] 2.14 Add additive CSS rules to `frontend/src/styles.css` for participant section layout (no existing rule modified).
-- [ ] 2.15 Mount `<ParticipantSection>` in `frontend/src/App.jsx` below event grid; inject `loadParticipants` and `addParticipant` props from existing API.
-- [ ] 2.16 Verify: `npm run test -w frontend` passes all participant tests + original 13; `npm test` full suite green.
+- [x] 2.11 Create `frontend/src/api/participantsApi.js` with `getParticipants()`, `createParticipant({name, email})` using shared `mutate` helper pattern from `eventsApi.js`.
+- [x] 2.12 Create `frontend/src/components/StatusPanel.jsx` — presentational component accepting `state` (`loading|empty|error|ready`), `emptyMessage`, `errorMessage`, and `children` props.
+- [x] 2.13 Create `frontend/src/components/ParticipantSection.jsx` with `useEffect` + `useRef` mutationRevision guard, loading/empty/error/ready states, and create form.
+- [x] 2.14 Add additive CSS rules to `frontend/src/styles.css` for participant section layout (no existing rule modified).
+- [x] 2.15 Mount `<ParticipantSection>` in `frontend/src/App.jsx` below event grid; inject `loadParticipants` and `addParticipant` props from existing API.
+- [x] 2.16 Verify: `npm run test -w frontend` passes all participant tests + original 13; `npm test` full suite green (25 frontend + 12 backend = 37 total).
 
 ### REFACTOR Tasks
 
-- [ ] 2.17 Extract shared loading/error patterns between EventSection and ParticipantSection if duplication exceeds 3 lines; verify tests still pass.
+- [x] 2.17 Extract shared loading/error patterns between EventSection and ParticipantSection if duplication exceeds 3 lines; verify tests still pass. — No extraction needed: existing event section pattern uses inline conditionals (3 lines each) which are already compact. ParticipantSection uses StatusPanel. No meaningful duplication to extract; 37/37 tests still green.
 
 ## Phase 3: Enrollment + Attendee Sections (Strict TDD — RED → GREEN → REFACTOR)
 
@@ -116,6 +116,6 @@ Chain strategy: stacked-to-main
 - [ ] 6.1 Run full test suite: `npm test` — all tests green (baseline + participant + enrollment + attendee).
 - [ ] 6.2 Verify spec acceptance: R1 (participant create/list), R2 (enrollment with error feedback), R3 (attendee list), R4 (reusable prop-injected components), R5 (loading/empty/error states).
 - [ ] 6.3 Verify evidence acceptance: exactly 6 FE + 6 BE screenshots, terminal-only, manual data creation documented.
-- [ ] 6.4 Verify git delivery: meaningful commit history with Conventional Commits; each slice independently revertible; `npm test` green at each slice tip.
-- [ ] 6.5 Verify rollback: revert each slice's commits individually; prior slices remain green; no cross-slice breakage.
+- [ ] 6.4 Verify git delivery: meaningful commit history with Conventional Commits; Slices 2 onward independently revertible to root baseline `ddd1e60`; `npm test` green at each slice tip.
+- [ ] 6.5 Verify rollback: revert each later slice's commits individually; prior slices remain green; no cross-slice breakage. Treat Slice 1 / `ddd1e60` as the repository foundation, removable only by discarding or reinitializing history.
 - [ ] 6.6 Final smoke test: manually create participant → enroll in event → verify attendee list updates → verify error states (duplicate, capacity).
