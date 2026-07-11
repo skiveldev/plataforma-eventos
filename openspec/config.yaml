@@ -1,0 +1,33 @@
+project: AgendaU
+mode: interactive
+persistence: hybrid
+review_budget: 400
+chained_pr_strategy: force-chained
+
+context:
+  - React 19 + Vite frontend, Express 5 + Node.js backend
+  - npm workspaces (frontend, backend)
+  - JSON file persistence with serialized read-modify-write
+  - Prop-injected components for testability
+  - No TypeScript, no linter, no formatter configured
+
+strict_tdd: true
+
+testing:
+  runner: vitest
+  frontend_command: npm run test -w frontend
+  backend_command: npm run test -w backend
+  coverage: false
+  layers:
+    unit: vitest
+    integration: supertest (backend), testing-library/react (frontend)
+    e2e: none
+
+phases:
+  proposal: required
+  spec: required
+  design: required
+  tasks: required
+  apply: required
+  verify: required
+  archive: required

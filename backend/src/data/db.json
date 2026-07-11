@@ -1,0 +1,13 @@
+{
+  "events": [
+    {"id":"evt-1","title":"Web Accessibility Workshop","description":"Practical techniques for building inclusive interfaces.","date":"2026-08-14T14:00:00.000Z","location":"Computer Lab 2","category":"Workshop","capacity":30},
+    {"id":"evt-2","title":"Research Methods Seminar","description":"An introduction to evidence-based academic research.","date":"2026-09-03T16:00:00.000Z","location":"Main Auditorium","category":"Seminar","capacity":80},
+    {"id":"evt-3","title":"Student Project Showcase","description":"Final-year students present their software projects.","date":"2026-10-20T13:30:00.000Z","location":"Innovation Hall","category":"Exhibition","capacity":120}
+  ],
+  "participants": [
+    {"id":"par-1","name":"Alex Morgan","email":"alex.morgan@example.edu"}
+  ],
+  "registrations": [
+    {"id":"reg-1","eventId":"evt-1","participantId":"par-1","createdAt":"2026-07-11T12:00:00.000Z"}
+  ]
+}
