@@ -1,17 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
 import { createEvent, deleteEvent, getEvents, updateEvent } from './api/eventsApi.js';
 import { createParticipant, getParticipants } from './api/participantsApi.js';
+import { getAttendees, register } from './api/registrationsApi.js';
 import EventForm from './EventForm.jsx';
 import ParticipantSection from './components/ParticipantSection.jsx';
+import EnrollmentSection from './components/EnrollmentSection.jsx';
+import AttendeeSection from './components/AttendeeSection.jsx';
 
-export default function App({ loadEvents = getEvents, addEvent = createEvent, editEvent = updateEvent, removeEvent = deleteEvent, confirmDelete = window.confirm, loadParticipants = getParticipants, addParticipant = createParticipant }) {
+export default function App({ loadEvents = getEvents, addEvent = createEvent, editEvent = updateEvent, removeEvent = deleteEvent, confirmDelete = window.confirm, loadParticipants = getParticipants, addParticipant = createParticipant, enrollParticipant = register, loadAttendees = getAttendees }) {
   const [events, setEvents] = useState([]);
   const [search, setSearch] = useState('');
   const [status, setStatus] = useState('loading');
   const [editing, setEditing] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [notice, setNotice] = useState(null);
+  const [participants, setParticipants] = useState([]);
+  const [participantStatus, setParticipantStatus] = useState('loading');
+  const [enrollmentEventId, setEnrollmentEventId] = useState('');
+  const [attendeeRevision, setAttendeeRevision] = useState(0);
   const mutationRevision = useRef(0);
+  const participantRevision = useRef(0);
 
   useEffect(() => {
     let active = true;
@@ -20,6 +28,16 @@ export default function App({ loadEvents = getEvents, addEvent = createEvent, ed
     const timer = setTimeout(() => loadEvents(search).then((items) => { if (active && revision === mutationRevision.current) { setEvents(items); setStatus('ready'); } }).catch(() => { if (active && revision === mutationRevision.current) setStatus('error'); }), 250);
     return () => { active = false; clearTimeout(timer); };
   }, [search, loadEvents]);
+
+  useEffect(() => {
+    let active = true;
+    const revision = participantRevision.current;
+    setParticipantStatus('loading');
+    loadParticipants()
+      .then((items) => { if (active && revision === participantRevision.current) { setParticipants(items); setParticipantStatus('ready'); } })
+      .catch(() => { if (active && revision === participantRevision.current) setParticipantStatus('error'); });
+    return () => { active = false; };
+  }, [loadParticipants]);
 
   async function saveEvent(values) {
     const submittedEvent = editing;
@@ -56,6 +74,18 @@ export default function App({ loadEvents = getEvents, addEvent = createEvent, ed
       {status === 'ready' && events.length === 0 && <p className="state">No events match your search.</p>}
        {status === 'ready' && events.length > 0 && <div className="event-grid">{events.map((event) => <article key={event.id} className="event-card"><div className="event-meta"><span>{event.category}</span><time dateTime={event.date}>{new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric' }).format(new Date(event.date))}</time></div><h3>{event.title}</h3><p>{event.description}</p><footer><span>{event.location}</span><span>{event.capacity} places</span></footer><div className="card-actions"><button type="button" disabled={submitting} onClick={() => { setEditing(event); setNotice(null); }}>Edit {event.title}</button><button type="button" className="danger-button" disabled={submitting} onClick={() => handleDelete(event)}>Delete {event.title}</button></div></article>)}</div>}
       <ParticipantSection loadParticipants={loadParticipants} addParticipant={addParticipant} />
+      <EnrollmentSection
+        events={events}
+        participants={participants}
+        registerParticipant={enrollParticipant}
+        onEventSelect={setEnrollmentEventId}
+        onEnrollmentSuccess={() => setAttendeeRevision((r) => r + 1)}
+      />
+      <AttendeeSection
+        eventId={enrollmentEventId}
+        loadAttendees={loadAttendees}
+        revision={attendeeRevision}
+      />
     </main>
     <footer className="site-footer"><strong>AgendaU</strong><span>Built for academic life.</span></footer>
   </>;

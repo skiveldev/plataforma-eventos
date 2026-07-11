@@ -66,31 +66,31 @@ Chain strategy: stacked-to-main
 
 ### RED Tasks (write failing tests first)
 
-- [ ] 3.1 RED: Write test for `EnrollmentSection` rendering event selector + participant selector + submit button; verify test fails.
-- [ ] 3.2 RED: Write test for successful enrollment: selecting event+participant, calling `register`, showing success confirmation; verify test fails.
-- [ ] 3.3 RED: Write test for duplicate enrollment error (409 → "Participant is already registered"); verify test fails.
-- [ ] 3.4 RED: Write test for capacity reached error (409 → "Event capacity reached"); verify test fails.
-- [ ] 3.5 RED: Write test for missing resource error (404 → specific API error message); verify test fails.
-- [ ] 3.6 RED: Write test for `EnrollmentSection` receiving `events` as prop from App (no internal fetch); verify test fails.
-- [ ] 3.7 RED: Write test for `AttendeeSection` loading state on mount; verify test fails.
-- [ ] 3.8 RED: Write test for `AttendeeSection` displaying empty message when no registrations; verify test fails.
-- [ ] 3.9 RED: Write test for `AttendeeSection` listing attendee names/emails on successful load; verify test fails.
-- [ ] 3.10 RED: Write test for `AttendeeSection` error state when `getAttendees` throws; verify test fails.
-- [ ] 3.11 RED: Write integration test: successful enrollment triggers attendee list refresh (invalidate pattern); verify test fails.
+- [x] 3.1 RED: Write test for `EnrollmentSection` rendering event selector + participant selector + submit button; verify test fails.
+- [x] 3.2 RED: Write test for successful enrollment: selecting event+participant, calling `register`, showing success confirmation; verify test fails.
+- [x] 3.3 RED: Write test for duplicate enrollment error (409 → "Participant is already registered"); verify test fails.
+- [x] 3.4 RED: Write test for capacity reached error (409 → "Event capacity reached"); verify test fails.
+- [x] 3.5 RED: Write test for missing resource error (404 → specific API error message); verify test fails.
+- [x] 3.6 RED: Write test for `EnrollmentSection` receiving `events` as prop from App (no internal fetch); verify test fails.
+- [x] 3.7 RED: Write test for `AttendeeSection` loading state on mount; verify test fails.
+- [x] 3.8 RED: Write test for `AttendeeSection` displaying empty message when no registrations; verify test fails.
+- [x] 3.9 RED: Write test for `AttendeeSection` listing attendee names/emails on successful load; verify test fails.
+- [x] 3.10 RED: Write test for `AttendeeSection` error state when `getAttendees` throws; verify test fails.
+- [x] 3.11 RED: Write integration test: successful enrollment triggers attendee list refresh (invalidate pattern); verify test fails.
 
 ### GREEN Tasks (minimal implementation to pass tests)
 
-- [ ] 3.12 Extend `frontend/src/api/participantsApi.js` with `register(eventId, participantId)` and `getAttendees(eventId)`.
-- [ ] 3.13 Create `frontend/src/components/EnrollmentSection.jsx` with event/participant selectors, submit handler, and HTTP status-based error discrimination (409 duplicate, 409 capacity, 404 not found).
-- [ ] 3.14 Create `frontend/src/components/AttendeeSection.jsx` with `useEffect` + `useRef` mutationRevision guard, loading/empty/error/ready states.
-- [ ] 3.15 Add additive CSS rules to `frontend/src/styles.css` for enrollment form grid and attendee list (no existing rule modified).
-- [ ] 3.16 Mount `<EnrollmentSection>` and `<AttendeeSection>` in `frontend/src/App.jsx`; inject `events` prop (from App's existing state), `loadParticipants`, `register`, and `loadAttendees` props.
-- [ ] 3.17 Verify: `npm run test -w frontend` passes all new tests + prior tests; `npm test` full suite green (38+ tests).
+- [x] 3.12 Created `frontend/src/api/registrationsApi.js` (per user instruction — separate adapter mirroring participantsApi pattern) with `register(eventId, participantId)` and `getAttendees(eventId)`, including timeout, AbortSignal forwarding, and error handling.
+- [x] 3.13 Created `frontend/src/components/EnrollmentSection.jsx` with event/participant selectors, submit handler, and HTTP status-based error discrimination (409 duplicate, 409 capacity, 404 not found).
+- [x] 3.14 Created `frontend/src/components/AttendeeSection.jsx` with `useEffect` + `useRef` mutationRevision guard, loading/empty/error/ready states.
+- [x] 3.15 Added additive CSS rules to `frontend/src/styles.css` for enrollment form grid and attendee list (no existing rule modified).
+- [x] 3.16 Mounted `<EnrollmentSection>` and `<AttendeeSection>` in `frontend/src/App.jsx`; inject `events` prop (from App's existing state), `participants`, `enrollParticipant`, and `loadAttendees` props.
+- [x] 3.17 Verified: `npm test` full suite green (65 frontend + 12 backend = 77 tests total).
 
 ### REFACTOR Tasks
 
-- [ ] 3.18 Review `StatusPanel` usage across all three sections; confirm single reusable component satisfies R4; extract shared styles if needed.
-- [ ] 3.19 Verify prop-injection pattern: each section testable with mock adapters, no global fetch side effects.
+- [x] 3.18 Reviewed `StatusPanel` usage: ParticipantSection and AttendeeSection both use StatusPanel; EnrollmentSection uses simpler inline notice elements (success/error messages only, no data loading states). The EnrollmentSection's simpler pattern is appropriate — it doesn't fetch data itself, it only submits. No shared style extraction needed; existing CSS classes (.notice, .notice.error) reused successfully.
+- [x] 3.19 Verified prop-injection pattern: EnrollmentSection (events, participants, registerParticipant, onEventSelect, onEnrollmentSuccess), AttendeeSection (eventId, loadAttendees, revision) — all data and behavior injected via props. Each section independently testable with mock adapters. No global fetch side effects.
 
 ## Phase 4: Execution Evidence (Six FE + Six BE)
 
