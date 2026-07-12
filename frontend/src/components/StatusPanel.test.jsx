@@ -5,7 +5,7 @@ import StatusPanel from './StatusPanel.jsx';
 describe('StatusPanel', () => {
   it('renders a loading state with a spinner', () => {
     render(<StatusPanel state="loading" />);
-    expect(screen.getByRole('status')).toHaveTextContent('Loading');
+    expect(screen.getByRole('status')).toHaveTextContent('Cargando');
   });
 
   it('renders an empty state with the configured message', () => {

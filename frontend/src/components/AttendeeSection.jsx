@@ -1,6 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import StatusPanel from './StatusPanel.jsx';
 
+function getInitials(name) {
+  if (!name) return '?';
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+}
+
 export default function AttendeeSection({ eventId, loadAttendees, revision = 0 }) {
   const [attendees, setAttendees] = useState([]);
   const [status, setStatus] = useState('loading');
@@ -26,7 +38,7 @@ export default function AttendeeSection({ eventId, loadAttendees, revision = 0 }
       })
       .catch((error) => {
         if (active && rev === mutationRevision.current) {
-          setErrorMessage(error.message || 'Could not load attendees.');
+          setErrorMessage(error.message || 'No se pudieron cargar los asistentes.');
           setStatus('error');
         }
       });
@@ -37,17 +49,22 @@ export default function AttendeeSection({ eventId, loadAttendees, revision = 0 }
     <section className="attendee-section" aria-labelledby="attendees-heading">
       <div className="toolbar">
         <div>
-          <p className="eyebrow">ATTENDEES</p>
-          <h2 id="attendees-heading">Attendees</h2>
+          <p className="eyebrow">ASISTENTES</p>
+          <h2 id="attendees-heading">Asistentes</h2>
         </div>
       </div>
 
-      <StatusPanel state={status} emptyMessage="No attendees registered yet." errorMessage={errorMessage}>
+      <StatusPanel state={status} emptyMessage="Aún no hay asistentes registrados." errorMessage={errorMessage}>
         <ul className="participant-list">
           {attendees.map((a) => (
             <li key={a.id}>
-              <strong>{a.name}</strong>
-              <span>{a.email}</span>
+              <div className="participant-info">
+                <div className="avatar" aria-hidden="true">{getInitials(a.name)}</div>
+                <div className="participant-details">
+                  <strong>{a.name}</strong>
+                  <span>{a.email}</span>
+                </div>
+              </div>
             </li>
           ))}
         </ul>
@@ -59,7 +76,7 @@ export default function AttendeeSection({ eventId, loadAttendees, revision = 0 }
           className="secondary-button"
           onClick={() => setRetryKey((k) => k + 1)}
         >
-          Retry
+          Reintentar
         </button>
       )}
     </section>

@@ -14,7 +14,7 @@ describe('AttendeeSection', () => {
         loadAttendees={() => new Promise(() => {})}
       />
     );
-    expect(screen.getByRole('status')).toHaveTextContent('Loading');
+    expect(screen.getByRole('status')).toHaveTextContent('Cargando');
   });
 
   // 3.8: empty message when no registrations
@@ -25,7 +25,7 @@ describe('AttendeeSection', () => {
         loadAttendees={() => Promise.resolve([])}
       />
     );
-    expect(await screen.findByText(/No attendees/)).toBeVisible();
+    expect(await screen.findByText(/asistentes/)).toBeVisible();
   });
 
   // 3.9: list attendee names/emails on successful load
@@ -63,7 +63,7 @@ describe('AttendeeSection', () => {
     );
     await screen.findByRole('alert');
     expect(
-      screen.getByRole('button', { name: /retry|reload|try again/i })
+      screen.getByRole('button', { name: /reintentar/i })
     ).toBeVisible();
   });
 
@@ -83,7 +83,7 @@ describe('AttendeeSection', () => {
     await screen.findByRole('alert');
 
     fireEvent.click(
-      screen.getByRole('button', { name: /retry|reload|try again/i })
+      screen.getByRole('button', { name: /reintentar/i })
     );
 
     await waitFor(() => expect(loadAttendees).toHaveBeenCalledTimes(2));

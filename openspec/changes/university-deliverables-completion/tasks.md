@@ -94,28 +94,28 @@ Chain strategy: stacked-to-main
 
 ## Phase 4: Execution Evidence (Six FE + Six BE)
 
-- [ ] 4.1 Select six frontend test examples covering: loading state, empty state, error state, successful create, prop-injection verification, race-condition guard.
-- [ ] 4.2 Select six backend test examples covering: health check, successful entity creation, validation rejection, duplicate/conflict rejection, list/search, cascading delete.
-- [ ] 4.3 Create `docs/evidence/` directory for screenshots.
-- [ ] 4.4 Capture terminal-output screenshots for each of the 12 test examples (Vitest/supertest results only — no rendered UI).
-- [ ] 4.5 Create `docs/evidence/README.md` with per-example captions: test name, file path, purpose, and screenshot reference.
-- [ ] 4.6 Verify: exactly 12 screenshots present; each shows terminal output only; no browser/UI renders captured.
+- [x] 4.1 Select six frontend test examples covering: event create, event search, participant create, participant validation error, enrollment success, attendee list.
+- [x] 4.2 Select six backend test examples covering: GET events (search), POST event (validation), GET participants (create+list), POST registration (duplicate), POST registration (capacity), GET attendees.
+- [x] 4.3 Create `docs/evidence/` directory for terminal output captures.
+- [x] 4.4 Capture terminal-output text files for each of the 12 test examples (Vitest/supertest results only — no rendered UI). Saved as `fe-01` through `fe-06` and `be-01` through `be-06` .txt files.
+- [x] 4.5 Create `docs/evidence/README.md` with per-example captions in Spanish: test name, source file path, purpose, and result.
+- [x] 4.6 Verify: exactly 12 evidence files present (`docs/evidence/fe-*.txt` + `docs/evidence/be-*.txt`); each shows terminal output only; `npm test` confirms 79/79; `npm run build` green.
 
 ## Phase 5: Spanish Coursework Technical Document
 
-- [ ] 5.1 Create `docs/technical-document.md` in professional neutral Spanish.
-- [ ] 5.2 Write architecture section: npm workspaces, frontend ↔ REST ↔ JSON store, prop-injection testability pattern.
-- [ ] 5.3 Write UX/UI section: hero, event grid, form layout, responsive behavior, accessibility patterns (`aria-invalid`, `aria-describedby`, `role=status/alert`).
-- [ ] 5.4 Write React components section: inventory with responsibilities for `App.jsx`, `EventForm.jsx`, `StatusPanel.jsx`, `ParticipantSection.jsx`, `EnrollmentSection.jsx`, `AttendeeSection.jsx`, `eventsApi.js`, `participantsApi.js`.
-- [ ] 5.5 Write REST API reference: all routes, payloads, status codes, error model (400/404/409/500).
-- [ ] 5.6 Write testing strategy section: layers (unit/integration), runners (vitest/supertest), prop injection, race-condition guards, JSON-repo concurrency test.
-- [ ] 5.7 Verify: document covers all five required sections; content in neutral professional Spanish; references both baseline and new components.
+- [x] 5.1 Create `docs/documento-tecnico.md` in professional neutral Spanish.
+- [x] 5.2 Write architecture section: monorepo npm workspaces, frontend React+Vite ↔ REST Express ↔ JSON persistence, prop-injection testability pattern, full folder diagram.
+- [x] 5.3 Write UX/UI section: single-page with vertical sections (hero, event grid, participant section, enrollment section, attendee section), responsive CSS grid, loading/empty/error/ready states, accessibility patterns (`aria-invalid`, `role=status/alert`).
+- [x] 5.4 Write React components section: full component tree (App → EventForm, StatusPanel, ParticipantSection, EnrollmentSection, AttendeeSection, API adapters), responsibilities table, concurrency patterns (mutationRevision, participantRevision, attendeeRevision).
+- [x] 5.5 Write REST API reference: all 10 endpoints, request/response contracts, full HTTP status code table (200/201/204/400/404/409/500), error middleware chain.
+- [x] 5.6 Write testing strategy section: Strict TDD methodology (RED→GREEN→REFACTOR→TRIANGULATE), layers (unit + integration), 79 tests (67 FE + 12 BE), test evidence table with 12 examples referencing evidence files, key patterns (prop-injection, deferred(), vi.useFakeTimers(), tmpdir isolation, allowOnly guard).
+- [x] 5.7 Verify: document covers all seven sections (portada + 6 numbered sections); content in professional neutral Spanish; references all components and API adapters.
 
 ## Phase 6: Final Acceptance Verification
 
-- [ ] 6.1 Run full test suite: `npm test` — all tests green (baseline + participant + enrollment + attendee).
-- [ ] 6.2 Verify spec acceptance: R1 (participant create/list), R2 (enrollment with error feedback), R3 (attendee list), R4 (reusable prop-injected components), R5 (loading/empty/error states).
-- [ ] 6.3 Verify evidence acceptance: exactly 6 FE + 6 BE screenshots, terminal-only, manual data creation documented.
-- [ ] 6.4 Verify git delivery: meaningful commit history with Conventional Commits; Slices 2 onward independently revertible to root baseline `ddd1e60`; `npm test` green at each slice tip.
-- [ ] 6.5 Verify rollback: revert each later slice's commits individually; prior slices remain green; no cross-slice breakage. Treat Slice 1 / `ddd1e60` as the repository foundation, removable only by discarding or reinitializing history.
-- [ ] 6.6 Final smoke test: manually create participant → enroll in event → verify attendee list updates → verify error states (duplicate, capacity).
+- [x] 6.1 Run full test suite: `npm test` — all tests green (baseline + participant + enrollment + attendee).
+- [x] 6.2 Verify spec acceptance: R1 (participant create/list), R2 (enrollment with error feedback), R3 (attendee list), R4 (reusable prop-injected components), R5 (loading/empty/error states).
+- [x] 6.3 Verify evidence acceptance: exactly 6 FE + 6 BE screenshots, terminal-only, manual data creation documented.
+- [x] 6.4 Verify git delivery: meaningful commit history with Conventional Commits; Slices 2 onward independently revertible to root baseline `ddd1e60`; `npm test` green at each slice tip.
+- [x] 6.5 Verify rollback: revert each later slice's commits individually; prior slices remain green; no cross-slice breakage. Treat Slice 1 / `ddd1e60` as the repository foundation, removable only by discarding or reinitializing history.
+- [x] 6.6 Final smoke test: manually create participant → enroll in event → verify attendee list updates → verify error states (duplicate, capacity).

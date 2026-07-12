@@ -1,6 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import StatusPanel from './StatusPanel.jsx';
 
+function getInitials(name) {
+  if (!name) return '?';
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((w) => w[0])
+    .filter(Boolean)
+    .slice(0, 2)
+    .join('')
+    .toUpperCase();
+}
+
 export default function ParticipantSection({ loadParticipants, addParticipant }) {
   const [participants, setParticipants] = useState([]);
   const [status, setStatus] = useState('loading');
@@ -26,7 +38,7 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
       })
       .catch((error) => {
         if (active && revision === mutationRevision.current) {
-          setErrorMessage(error.message || 'Could not load participants.');
+          setErrorMessage(error.message || 'No se pudieron cargar los participantes.');
           setStatus('error');
         }
       });
@@ -43,16 +55,16 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
     const trimmedEmail = email.trim();
 
     if (!trimmedName) {
-      setMutationError('Please enter a name.');
+      setMutationError('Ingrese un nombre.');
       return;
     }
     if (!trimmedEmail) {
-      setMutationError('Please enter an email address.');
+      setMutationError('Ingrese un correo electrónico.');
       return;
     }
 
     if (!isValidEmail(trimmedEmail)) {
-      setMutationError('Please enter a valid email address.');
+      setMutationError('Ingrese un correo electrónico válido.');
       return;
     }
 
@@ -66,7 +78,7 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
       setName('');
       setEmail('');
     } catch (error) {
-      setMutationError(error.message || 'Could not add participant.');
+      setMutationError(error.message || 'No se pudo agregar el participante.');
     } finally {
       setBusy(false);
     }
@@ -76,14 +88,14 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
     <section className="participant-section" aria-labelledby="participants-heading">
       <div className="toolbar">
         <div>
-          <p className="eyebrow">PARTICIPANTS</p>
-          <h2 id="participants-heading">Manage participants</h2>
+          <p className="eyebrow">PARTICIPANTES</p>
+          <h2 id="participants-heading">Gestionar participantes</h2>
         </div>
       </div>
 
       <form className="participant-form" onSubmit={handleSubmit} noValidate>
         <label>
-          <span>Name</span>
+          <span>Nombre</span>
           <input
             type="text"
             value={name}
@@ -92,7 +104,7 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
           />
         </label>
         <label>
-          <span>Email</span>
+          <span>Correo electrónico</span>
           <input
             type="email"
             value={email}
@@ -101,7 +113,7 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
           />
         </label>
         <button className="primary-button" type="submit" disabled={busy}>
-          {busy ? 'Adding…' : 'Add participant'}
+          {busy ? 'Agregando…' : 'Agregar participante'}
         </button>
       </form>
 
@@ -111,12 +123,18 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
         </p>
       )}
 
-      <StatusPanel state={status} emptyMessage="No participants yet. Add one above." errorMessage={errorMessage}>
+      <StatusPanel state={status} emptyMessage="Aún no hay participantes. Agregue uno arriba." errorMessage={errorMessage}>
         <ul className="participant-list">
           {participants.map((p) => (
             <li key={p.id}>
-              <strong>{p.name}</strong>
-              <span>{p.email}</span>
+              <div className="participant-info">
+                <div className="avatar" aria-hidden="true">{getInitials(p.name)}</div>
+                <div className="participant-details">
+                  <strong>{p.name}</strong>
+                  <span>{p.email}</span>
+                </div>
+              </div>
+              <button type="button" className="participant-delete" aria-label={`Eliminar ${p.name}`}>&#x2715;</button>
             </li>
           ))}
         </ul>
@@ -128,7 +146,7 @@ export default function ParticipantSection({ loadParticipants, addParticipant })
           className="secondary-button"
           onClick={() => setRetryKey((k) => k + 1)}
         >
-          Retry
+          Reintentar
         </button>
       )}
     </section>

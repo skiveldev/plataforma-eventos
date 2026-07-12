@@ -18,9 +18,9 @@ describe('EnrollmentSection', () => {
       />
     );
 
-    expect(screen.getByRole('combobox', { name: /event/i })).toBeVisible();
-    expect(screen.getByRole('combobox', { name: /participant/i })).toBeVisible();
-    expect(screen.getByRole('button', { name: /enroll/i })).toBeVisible();
+    expect(screen.getByRole('combobox', { name: /evento/i })).toBeVisible();
+    expect(screen.getByRole('combobox', { name: /participante/i })).toBeVisible();
+    expect(screen.getByRole('button', { name: /inscribir/i })).toBeVisible();
   });
 
   // 3.2: successful enrollment
@@ -34,14 +34,14 @@ describe('EnrollmentSection', () => {
       />
     );
 
-    fireEvent.change(screen.getByRole('combobox', { name: /event/i }), { target: { value: event.id } });
-    fireEvent.change(screen.getByRole('combobox', { name: /participant/i }), { target: { value: participant.id } });
-    fireEvent.click(screen.getByRole('button', { name: /enroll/i }));
+    fireEvent.change(screen.getByRole('combobox', { name: /evento/i }), { target: { value: event.id } });
+    fireEvent.change(screen.getByRole('combobox', { name: /participante/i }), { target: { value: participant.id } });
+    fireEvent.click(screen.getByRole('button', { name: /inscribir/i }));
 
     await waitFor(() =>
       expect(registerParticipant).toHaveBeenCalledWith(event.id, participant.id)
     );
-    expect(await screen.findByRole('status')).toHaveTextContent(/success/i);
+    expect(await screen.findByRole('status')).toHaveTextContent(/exitosa/i);
   });
 
   // 3.3: duplicate enrollment error (409)
@@ -55,9 +55,9 @@ describe('EnrollmentSection', () => {
       />
     );
 
-    fireEvent.change(screen.getByRole('combobox', { name: /event/i }), { target: { value: event.id } });
-    fireEvent.change(screen.getByRole('combobox', { name: /participant/i }), { target: { value: participant.id } });
-    fireEvent.click(screen.getByRole('button', { name: /enroll/i }));
+    fireEvent.change(screen.getByRole('combobox', { name: /evento/i }), { target: { value: event.id } });
+    fireEvent.change(screen.getByRole('combobox', { name: /participante/i }), { target: { value: participant.id } });
+    fireEvent.click(screen.getByRole('button', { name: /inscribir/i }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Participant is already registered');
   });
@@ -73,9 +73,9 @@ describe('EnrollmentSection', () => {
       />
     );
 
-    fireEvent.change(screen.getByRole('combobox', { name: /event/i }), { target: { value: event.id } });
-    fireEvent.change(screen.getByRole('combobox', { name: /participant/i }), { target: { value: participant.id } });
-    fireEvent.click(screen.getByRole('button', { name: /enroll/i }));
+    fireEvent.change(screen.getByRole('combobox', { name: /evento/i }), { target: { value: event.id } });
+    fireEvent.change(screen.getByRole('combobox', { name: /participante/i }), { target: { value: participant.id } });
+    fireEvent.click(screen.getByRole('button', { name: /inscribir/i }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Event capacity reached');
   });
@@ -91,9 +91,9 @@ describe('EnrollmentSection', () => {
       />
     );
 
-    fireEvent.change(screen.getByRole('combobox', { name: /event/i }), { target: { value: event.id } });
-    fireEvent.change(screen.getByRole('combobox', { name: /participant/i }), { target: { value: participant.id } });
-    fireEvent.click(screen.getByRole('button', { name: /enroll/i }));
+    fireEvent.change(screen.getByRole('combobox', { name: /evento/i }), { target: { value: event.id } });
+    fireEvent.change(screen.getByRole('combobox', { name: /participante/i }), { target: { value: participant.id } });
+    fireEvent.click(screen.getByRole('button', { name: /inscribir/i }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('Event not found');
   });
@@ -108,12 +108,12 @@ describe('EnrollmentSection', () => {
       />
     );
 
-    const eventSelect = screen.getByRole('combobox', { name: /event/i });
+    const eventSelect = screen.getByRole('combobox', { name: /evento/i });
     expect(eventSelect.children).toHaveLength(3); // default option + 2 events
     expect(screen.getByText(event.title)).toBeVisible();
     expect(screen.getByText(event2.title)).toBeVisible();
 
-    const participantSelect = screen.getByRole('combobox', { name: /participant/i });
+    const participantSelect = screen.getByRole('combobox', { name: /participante/i });
     expect(participantSelect.children).toHaveLength(3); // default option + 2 participants
     expect(screen.getByText(participant.name)).toBeVisible();
     expect(screen.getByText(participant2.name)).toBeVisible();

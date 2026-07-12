@@ -22,11 +22,11 @@ export default function EnrollmentSection({ events, participants, registerPartic
     try {
       await registerParticipant(eventId, participantId);
       setStatus('success');
-      setMessage('Registration successful!');
+      setMessage('¡Inscripción exitosa!');
       if (onEnrollmentSuccess) onEnrollmentSuccess(eventId);
     } catch (error) {
       setStatus('error');
-      setMessage(error.message || 'Could not enroll. Please try again.');
+      setMessage(error.message || 'No se pudo inscribir. Intente nuevamente.');
     } finally {
       setBusy(false);
     }
@@ -36,21 +36,21 @@ export default function EnrollmentSection({ events, participants, registerPartic
     <section className="enrollment-section" aria-labelledby="enrollment-heading">
       <div className="toolbar">
         <div>
-          <p className="eyebrow">ENROLLMENT</p>
-          <h2 id="enrollment-heading">Enroll a participant</h2>
+          <p className="eyebrow">INSCRIPCIÓN</p>
+          <h2 id="enrollment-heading">Inscribir un participante</h2>
         </div>
       </div>
 
       <form className="enrollment-form" onSubmit={handleSubmit}>
         <label>
-          <span>Event</span>
+          <span>Evento</span>
           <select
             value={eventId}
             disabled={busy}
             onChange={handleEventChange}
-            aria-label="Event"
+            aria-label="Evento"
           >
-            <option value="">Select an event…</option>
+            <option value="">Seleccionar un evento…</option>
             {events.map((ev) => (
               <option key={ev.id} value={ev.id}>{ev.title}</option>
             ))}
@@ -58,14 +58,14 @@ export default function EnrollmentSection({ events, participants, registerPartic
         </label>
 
         <label>
-          <span>Participant</span>
+          <span>Participante</span>
           <select
             value={participantId}
             disabled={busy}
             onChange={(e) => setParticipantId(e.target.value)}
-            aria-label="Participant"
+            aria-label="Participante"
           >
-            <option value="">Select a participant…</option>
+            <option value="">Seleccionar un participante…</option>
             {participants.map((p) => (
               <option key={p.id} value={p.id}>{p.name}</option>
             ))}
@@ -73,7 +73,7 @@ export default function EnrollmentSection({ events, participants, registerPartic
         </label>
 
         <button className="primary-button" type="submit" disabled={busy || !eventId || !participantId}>
-          {busy ? 'Enrolling…' : 'Enroll'}
+          {busy ? 'Inscribiendo…' : 'Inscribir'}
         </button>
       </form>
 

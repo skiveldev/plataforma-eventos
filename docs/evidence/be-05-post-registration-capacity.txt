@@ -1,0 +1,25 @@
+﻿
+> test
+> vitest run --testNamePattern rejects capacity below the current registration count --reporter verbose
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/cursos/Desarrollo de aplicaciones Web/Final/backend[39m
+
+ [2m[90mÔåô[39m[22m test/jsonRepository.test.js[2m > [22mserializes concurrent read-modify-write updates
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mreports health
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22msearches events
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mcreates a valid event
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mrejects invalid event data
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mrejects a non-object JSON body: null
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mrejects a non-object JSON body: %j
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mcreates and lists participants
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mregisters a participant and lists attendees
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mprevents duplicate registrations
+ [32mÔ£ô[39m test/app.test.js[2m > [22mAgendaU API[2m > [22mrejects capacity below the current registration count[32m 121[2mms[22m[39m
+ [2m[90mÔåô[39m[22m test/app.test.js[2m > [22mAgendaU API[2m > [22mupdates and deletes events
+
+[2m Test Files [22m [1m[32m1 passed[39m[22m[2m | [22m[33m1 skipped[39m[90m (2)[39m
+[2m      Tests [22m [1m[32m1 passed[39m[22m[2m | [22m[33m11 skipped[39m[90m (12)[39m
+[2m   Start at [22m 21:41:59
+[2m   Duration [22m 1.21s[2m (transform 74ms, setup 0ms, collect 551ms, tests 125ms, environment 0ms, prepare 414ms)[22m
+

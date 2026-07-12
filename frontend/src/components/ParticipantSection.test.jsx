@@ -20,7 +20,7 @@ describe('ParticipantSection', () => {
         addParticipant={() => {}}
       />
     );
-    expect(screen.getByRole('status')).toHaveTextContent('Loading');
+    expect(screen.getByRole('status')).toHaveTextContent('Cargando');
   });
 
   // 2.4: empty state
@@ -31,7 +31,7 @@ describe('ParticipantSection', () => {
         addParticipant={() => {}}
       />
     );
-    expect(await screen.findByText(/No participants/)).toBeVisible();
+    expect(await screen.findByText(/participantes/)).toBeVisible();
   });
 
   // 2.5: successful list
@@ -68,11 +68,11 @@ describe('ParticipantSection', () => {
         addParticipant={addParticipant}
       />
     );
-    await screen.findByText(/No participants/);
+    await screen.findByText(/participantes/);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Alice Rivera' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'alice@example.com' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Alice Rivera' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'alice@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     await waitFor(() =>
       expect(addParticipant).toHaveBeenCalledWith({
@@ -92,15 +92,15 @@ describe('ParticipantSection', () => {
         addParticipant={addParticipant}
       />
     );
-    await screen.findByText(/No participants/);
+    await screen.findByText(/participantes/);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Carlos Diaz' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'carlos@example.com' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Carlos Diaz' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'carlos@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     expect(await screen.findByText('Carlos Diaz')).toBeVisible();
-    expect(screen.getByLabelText('Name')).toHaveValue('');
-    expect(screen.getByLabelText('Email')).toHaveValue('');
+    expect(screen.getByLabelText('Nombre')).toHaveValue('');
+    expect(screen.getByLabelText('Correo electrónico')).toHaveValue('');
   });
 
   // 2.9: duplicate email (409) preserves fields
@@ -114,13 +114,13 @@ describe('ParticipantSection', () => {
     );
     await screen.findByText(participant.name);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Alice Rivera' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'alice@example.com' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Alice Rivera' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'alice@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     expect(await screen.findByText('Email is already registered')).toBeVisible();
-    expect(screen.getByLabelText('Name')).toHaveValue('Alice Rivera');
-    expect(screen.getByLabelText('Email')).toHaveValue('alice@example.com');
+    expect(screen.getByLabelText('Nombre')).toHaveValue('Alice Rivera');
+    expect(screen.getByLabelText('Correo electrónico')).toHaveValue('alice@example.com');
   });
 
   // 2.10: race-condition guard
@@ -137,9 +137,9 @@ describe('ParticipantSection', () => {
 
     await waitFor(() => expect(loadParticipants).toHaveBeenCalled());
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Diana Vega' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'diana@example.com' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Diana Vega' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'diana@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     expect(await screen.findByText('Diana Vega')).toBeVisible();
 
@@ -159,14 +159,14 @@ describe('ParticipantSection', () => {
         addParticipant={addParticipant}
       />
     );
-    await screen.findByText(/No participants/);
+    await screen.findByText(/participantes/);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: '   ' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'alice@example.com' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: '   ' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'alice@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     expect(addParticipant).not.toHaveBeenCalled();
-    expect(screen.getByRole('alert')).toHaveTextContent(/name/i);
+    expect(screen.getByRole('alert')).toHaveTextContent(/nombre/i);
   });
 
   // RELIABILITY-002: whitespace-only email must show validation error and NOT call addParticipant
@@ -178,14 +178,14 @@ describe('ParticipantSection', () => {
         addParticipant={addParticipant}
       />
     );
-    await screen.findByText(/No participants/);
+    await screen.findByText(/participantes/);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Alice' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: '    ' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Alice' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: '    ' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     expect(addParticipant).not.toHaveBeenCalled();
-    expect(screen.getByRole('alert')).toHaveTextContent(/email/i);
+    expect(screen.getByRole('alert')).toHaveTextContent(/correo/i);
   });
 
   // RELIABILITY-002: malformed email must show validation error and NOT call addParticipant
@@ -197,14 +197,14 @@ describe('ParticipantSection', () => {
         addParticipant={addParticipant}
       />
     );
-    await screen.findByText(/No participants/);
+    await screen.findByText(/participantes/);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Alice' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'not-an-email' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Alice' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'not-an-email' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     expect(addParticipant).not.toHaveBeenCalled();
-    expect(screen.getByRole('alert')).toHaveTextContent(/valid email/i);
+    expect(screen.getByRole('alert')).toHaveTextContent(/válido/i);
   });
 
   // RELIABILITY-002: valid email with @ and domain calls addParticipant (triangulation)
@@ -216,11 +216,11 @@ describe('ParticipantSection', () => {
         addParticipant={addParticipant}
       />
     );
-    await screen.findByText(/No participants/);
+    await screen.findByText(/participantes/);
 
-    fireEvent.change(screen.getByLabelText('Name'), { target: { value: 'Alice' } });
-    fireEvent.change(screen.getByLabelText('Email'), { target: { value: 'alice@example.com' } });
-    fireEvent.click(screen.getByRole('button', { name: /Add participant/i }));
+    fireEvent.change(screen.getByLabelText('Nombre'), { target: { value: 'Alice' } });
+    fireEvent.change(screen.getByLabelText('Correo electrónico'), { target: { value: 'alice@example.com' } });
+    fireEvent.click(screen.getByRole('button', { name: /Agregar participante/i }));
 
     await waitFor(() =>
       expect(addParticipant).toHaveBeenCalledWith({
@@ -253,7 +253,7 @@ describe('ParticipantSection', () => {
     );
     await screen.findByRole('alert');
     expect(
-      screen.getByRole('button', { name: /retry|reload|try again/i })
+      screen.getByRole('button', { name: /reintentar/i })
     ).toBeVisible();
   });
 
@@ -273,7 +273,7 @@ describe('ParticipantSection', () => {
     await screen.findByRole('alert');
 
     fireEvent.click(
-      screen.getByRole('button', { name: /retry|reload|try again/i })
+      screen.getByRole('button', { name: /reintentar/i })
     );
 
     await waitFor(() => expect(loadParticipants).toHaveBeenCalledTimes(2));

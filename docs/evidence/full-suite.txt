@@ -1,0 +1,49 @@
+﻿
+> agendau@0.1.0 test
+> npm run test --workspaces --if-present
+
+
+> frontend@0.1.0 test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/cursos/Desarrollo de aplicaciones Web/Final/frontend[39m
+
+ [32mÔ£ô[39m src/api/participantsApi.test.js [2m([22m[2m12 tests[22m[2m)[22m[32m 21[2mms[22m[39m
+ [32mÔ£ô[39m src/components/EnrollmentSection.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[33m 427[2mms[22m[39m
+ [32mÔ£ô[39m src/api/registrationsApi.test.js [2m([22m[2m6 tests[22m[2m)[22m[32m 11[2mms[22m[39m
+ [32mÔ£ô[39m src/components/AttendeeSection.test.jsx [2m([22m[2m6 tests[22m[2m)[22m[32m 260[2mms[22m[39m
+ [32mÔ£ô[39m src/components/ParticipantSection.test.jsx [2m([22m[2m15 tests[22m[2m)[22m[33m 550[2mms[22m[39m
+ [32mÔ£ô[39m src/components/StatusPanel.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[32m 96[2mms[22m[39m
+ [32mÔ£ô[39m src/App.test.jsx [2m([22m[2m18 tests[22m[2m)[22m[33m 5559[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mrenders loaded events [33m 334[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22msearches through the API boundary [33m 620[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mcreates an event and adds it to the list [33m 369[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mdoes not let an older list response overwrite a successful create [33m 430[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22medits an event in place [33m 364[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mlocks controls during save so another edit cannot replace the active selection [33m 377[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mdeletes an event after explicit confirmation [33m 324[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mblocks invalid capacity before calling the API [33m 340[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mshows an API mutation failure without changing the list [33m 361[2mms[22m[39m
+   [33m[2mÔ£ô[22m[39m App[2m > [22mrefreshes the attendee list after a successful enrollment [33m 374[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m7 passed[39m[22m[90m (7)[39m
+[2m      Tests [22m [1m[32m67 passed[39m[22m[90m (67)[39m
+[2m   Start at [22m 21:42:20
+[2m   Duration [22m 8.39s[2m (transform 376ms, setup 2.61s, collect 726ms, tests 6.92s, environment 9.26s, prepare 1.14s)[22m
+
+
+> test
+> vitest run
+
+
+[1m[46m RUN [49m[22m [36mv3.2.7 [39m[90mD:/cursos/Desarrollo de aplicaciones Web/Final/backend[39m
+
+ [32mÔ£ô[39m test/jsonRepository.test.js [2m([22m[2m1 test[22m[2m)[22m[32m 9[2mms[22m[39m
+ [32mÔ£ô[39m test/app.test.js [2m([22m[2m11 tests[22m[2m)[22m[32m 167[2mms[22m[39m
+
+[2m Test Files [22m [1m[32m2 passed[39m[22m[90m (2)[39m
+[2m      Tests [22m [1m[32m12 passed[39m[22m[90m (12)[39m
+[2m   Start at [22m 21:42:29
+[2m   Duration [22m 956ms[2m (transform 70ms, setup 0ms, collect 413ms, tests 177ms, environment 0ms, prepare 319ms)[22m
+
