@@ -1,13 +1,13 @@
-# AgendaU
+# AgendaU — Plataforma de Eventos Académicos
 
-AgendaU is an individual university project for discovering and managing academic events. It provides a React 19 single-page client and an Express 5 REST API backed by a local JSON file, organized as npm workspaces.
+Proyecto universitario individual para descubrir y gestionar eventos académicos. Aplicación React 19 de una sola página y API REST con Express 5, respaldada por un archivo JSON local, organizado como monorepo npm.
 
-## Requirements
+## Requisitos
 
-- Node.js 20 or newer
-- npm 10 or newer
+- Node.js 20 o superior
+- npm 10 o superior
 
-## Quick Start
+## Inicio rápido
 
 ```bash
 npm install
@@ -15,50 +15,51 @@ npm run dev:backend   # → http://localhost:3001
 npm run dev:frontend  # → http://localhost:5173
 ```
 
-The API serves the REST endpoints; the frontend proxies API calls via Vite.
+El frontend se comunica directamente con la API REST mediante fetch.
 
-## Verification
+## Verificación
 
 ```bash
-npm test              # vitest (frontend: 13 tests, backend: 12 tests) — all must pass
-npm run build         # Vite production build + backend syntax check
+npm test              # vitest (67 frontend + 12 backend) — 79 pruebas
+npm run build         # build de producción Vite + verificación de sintaxis del backend
 ```
 
-## Stack
+## Tecnologías
 
-| Layer | Technology |
-|-------|-----------|
+| Capa | Tecnología |
+|------|-----------|
 | Frontend | React 19, Vite 7, Vitest + Testing Library |
-| Backend | Express 5, custom validation, supertest |
-| Persistence | JSON file with serialized read-modify-write |
-| Tooling | npm workspaces, no TypeScript/linter configured |
+| Backend | Express 5, validación personalizada, supertest |
+| Persistencia | Archivo JSON con lectura/escritura serializada |
+| Herramientas | npm workspaces |
 
-## Structure
+## Estructura
 
 ```
 backend/
 ├── src/
-│   ├── app.js            # Express app + routes
-│   ├── server.js         # Entry point (port 3001)
-│   ├── services/         # Domain logic
-│   ├── repository/       # JSON file read/write
-│   ├── validation.js     # Zod schemas
-│   └── data/             # db.json store
+│   ├── app.js              # Aplicación Express + rutas REST
+│   ├── server.js           # Punto de entrada (puerto 3001)
+│   ├── services/           # Lógica de dominio
+│   ├── repository/         # Lectura/escritura del archivo JSON
+│   ├── validation.js       # Validación de campos
+│   └── data/               # Base de datos db.json
 └── test/
-    ├── app.test.js       # 11 integration tests (supertest)
-    └── jsonRepository.test.js  # 1 unit test
+    ├── app.test.js          # 11 pruebas de integración (supertest)
+    └── jsonRepository.test.js  # 1 prueba unitaria
 
 frontend/
 ├── src/
-│   ├── App.jsx           # Main page: event grid + form
-│   ├── EventForm.jsx     # Reusable prop-injected form
-│   ├── main.jsx          # React DOM entry
-│   ├── api/              # Fetch adapters
-│   ├── styles.css        # Responsive styles
-│   └── test/setup.js     # jsdom + Testing Library
-└── App.test.jsx          # 13 integration tests
+│   ├── App.jsx              # Página principal con secciones
+│   ├── EventForm.jsx        # Formulario reutilizable de eventos
+│   ├── main.jsx             # Entrada de React DOM
+│   ├── api/                 # Adaptadores fetch (eventos, participantes, inscripciones)
+│   ├── components/          # Secciones: participantes, inscripción, asistentes
+│   ├── styles.css           # Estilos responsive con sistema de diseño
+│   └── test/setup.js        # Configuración de jsdom + Testing Library
+└── App.test.jsx             # Pruebas de integración
 
-docs/                     # Coursework deliverables (Spanish)
+docs/                        # Entregables del proyecto (documento técnico y evidencias)
 ```
 
-The JSON store is appropriate for coursework and local development, but it is not intended for concurrent production writes.
+El almacenamiento en JSON es adecuado para trabajos académicos y desarrollo local, pero no está diseñado para escrituras concurrentes en producción.
