@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta name="Generator" content="Self-contained Markdown to Word-compatible HTML conversion" />
+  <title>Documento Técnico — AgendaU</title>
+  <!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom></w:WordDocument></xml><![endif]-->
+  <style type="text/css">
+    @page { size: A4; margin: 2.2cm 2cm 2cm 2cm; }
+    body { margin: 0; padding: 0; background: #f3f3f3; color: #1f1f1f; font-family: Calibri, Arial, sans-serif; font-size: 10.5pt; line-height: 1.45; }
+    .page { width: 17cm; min-height: 25.7cm; margin: 0 auto; padding: 2.2cm 2cm 2cm; background: #ffffff; }
+    .title-page { min-height: 18cm; padding-top: 4.5cm; text-align: center; page-break-after: always; }
+    .title-page h1 { margin: 0 0 0.5cm; color: #1f4e79; font-size: 28pt; font-weight: 700; }
+    .title-page h2 { margin: 0 0 2.5cm; color: #4f81bd; font-size: 16pt; font-weight: 400; }
+    .title-page p { margin: 0.25cm 0; font-size: 12pt; }
+    h1 { margin: 0.9cm 0 0.35cm; color: #1f4e79; font-size: 20pt; font-weight: 700; page-break-after: avoid; }
+    h2 { margin: 0.75cm 0 0.25cm; color: #1f4e79; font-size: 15pt; font-weight: 700; page-break-after: avoid; border-bottom: 1px solid #b4c6e7; padding-bottom: 0.08cm; }
+    h3 { margin: 0.55cm 0 0.18cm; color: #2f5597; font-size: 12pt; font-weight: 700; page-break-after: avoid; }
+    p { margin: 0 0 0.3cm; }
+    ul, ol { margin: 0.1cm 0 0.35cm 0.7cm; padding: 0; }
+    li { margin: 0.12cm 0; }
+    hr { border: 0; border-top: 1px solid #b4c6e7; margin: 0.7cm 0; }
+    table { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 0.2cm 0 0.45cm; font-size: 9pt; page-break-inside: avoid; }
+    th { background: #d9e2f3; color: #1f1f1f; border: 1px solid #7f8fa6; padding: 0.16cm 0.14cm; text-align: left; font-weight: 700; vertical-align: top; }
+    td { border: 1px solid #a6a6a6; padding: 0.14cm; vertical-align: top; overflow-wrap: break-word; word-wrap: break-word; }
+    .case-table th:nth-child(1), .case-table td:nth-child(1) { width: 15%; }
+    .case-table th:nth-child(2), .case-table td:nth-child(2) { width: 24%; }
+    .case-table th:nth-child(3), .case-table td:nth-child(3) { width: 20%; }
+    .case-table th:nth-child(4), .case-table td:nth-child(4) { width: 27%; }
+    .case-table th:nth-child(5), .case-table td:nth-child(5) { width: 14%; }
+    pre { margin: 0.2cm 0 0.4cm; padding: 0.25cm; background: #f2f2f2; border: 1px solid #d0d0d0; font-family: Consolas, "Courier New", monospace; font-size: 8.5pt; line-height: 1.3; white-space: pre-wrap; word-wrap: break-word; }
+    code { font-family: Consolas, "Courier New", monospace; font-size: 90%; }
+    strong { font-weight: 700; }
+    .evidence-pending { color: #595959; font-style: italic; }
+    .section-intro { margin-bottom: 0.35cm; }
+    @media print { body { background: #ffffff; } .page { width: auto; min-height: 0; margin: 0; padding: 0; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="title-page">
+      <h1>Documento Técnico — AgendaU</h1>
+      <h2>Plataforma de Eventos Académicos</h2>
+      <p><strong>Autor:</strong> Trabajo final individual</p>
+      <p><strong>Universidad:</strong> Desarrollo de Aplicaciones Web</p>
+      <p><strong>Fecha:</strong> Julio 2026</p>
+    </section>
+
+    <section>
+      <h1>1. Arquitectura del Proyecto</h1>
+      <p>AgendaU es una aplicación web full-stack organizada como un <strong>monorepo npm workspaces</strong> con dos paquetes independientes: <code>frontend</code> (React 19 + Vite 7) y <code>backend</code> (Express 5 + Node.js). La persistencia utiliza un archivo JSON local con serialización secuencial de lectura-modificación-escritura, adecuado para el entorno académico de desarrollo.</p>
+      <h2>1.1 Stack Tecnológico</h2>
+      <table><thead><tr><th>Capa</th><th>Tecnología</th><th>Versión</th></tr></thead><tbody>
+        <tr><td>Frontend</td><td>React + Vite</td><td>19 / 7</td></tr><tr><td>Backend</td><td>Express</td><td>5</td></tr><tr><td>Persistencia</td><td>JSON (archivo local)</td><td>-</td></tr><tr><td>Pruebas</td><td>Pruebas funcionales manuales</td><td>Práctica 8, Parte 9</td></tr><tr><td>Tooling</td><td>npm workspaces</td><td>10+</td></tr><tr><td>Lenguaje</td><td>JavaScript (ES Modules)</td><td>ES2022+</td></tr>
+      </tbody></table>
+      <h2>1.2 Diagrama de Carpetas</h2>
+      <pre>agendau/
+├── package.json                   # npm workspaces root
+├── backend/
+│   ├── package.json
+│   └── src/
+│       ├── server.js              # Punto de entrada (puerto 3001)
+│       ├── app.js                 # Aplicación Express + rutas REST
+│       ├── validation.js          # Validación de entrada (eventos, participantes)
+│       ├── services/
+│       │   └── agendaService.js   # Lógica de negocio (CRUD, reglas de inscripción)
+│       ├── repository/
+│       │   └── jsonRepository.js  # Lectura/escritura serializada de db.json
+│       └── data/
+│           └── db.json            # Almacenamiento persistente
+├── frontend/
+│   ├── package.json
+│   ├── vite.config.js             # Configuración de Vite
+│   └── src/
+│       ├── main.jsx               # Entrada React DOM
+│       ├── App.jsx                # Componente raíz: estado global, grid de eventos, secciones
+│       ├── EventForm.jsx          # Formulario reutilizable de eventos
+│       ├── styles.css             # Estilos responsive con diseño single-page
+│       ├── api/
+│       │   ├── eventsApi.js       # Adaptador fetch: GET/POST/PUT/DELETE /api/events
+│       │   ├── participantsApi.js # Adaptador fetch: GET/POST /api/participants
+│       │   └── registrationsApi.js # Adaptador fetch: POST /registrations, GET /attendees
+│       ├── components/
+│       │   ├── StatusPanel.jsx    # Panel presentacional: loading/empty/error/ready
+│       │   ├── ParticipantSection.jsx   # Sección de gestión de participantes
+│       │   ├── EnrollmentSection.jsx    # Sección de inscripción a eventos
+│       │   └── AttendeeSection.jsx      # Sección de lista de asistentes
+│       └── test/
+│           └── setup.js           # Configuración jsdom + Testing Library
+└── docs/
+    ├── capturas/
+    │   ├── frontend/              # Capturas del navegador de las pruebas manuales
+    │   └── backend/               # Capturas de PowerShell y transcriptos de API
+    └── documento-tecnico.md       # Este documento</pre>
+      <h2>1.3 Patrón de Diseño: Prop-Injection</h2>
+      <p>La aplicación sigue un patrón de <strong>inyección de dependencias por props</strong> que permite la testeabilidad de cada componente en aislamiento. Los adaptadores de API (<code>eventsApi</code>, <code>participantsApi</code>, <code>registrationsApi</code>) se inyectan como props en los componentes, con valores predeterminados que apuntan a los adaptadores reales:</p>
+      <pre>// App.jsx — props con defaults reales para producción
+export default function App({
+  loadEvents = getEvents,
+  addEvent = createEvent,
+  loadParticipants = getParticipants,
+  enrollParticipant = register,
+  loadAttendees = getAttendees,
+  // ...
+})</pre>
+      <p>Esta separación permite verificar cada flujo de la interfaz de forma aislada y mantener desacoplada la comunicación con la API.</p>
+    </section>
+
+    <hr />
+    <section>
+      <h1>2. Diseño UX/UI</h1>
+      <h2>2.1 Arquitectura Single-Page</h2>
+      <p>AgendaU se presenta como una <strong>página única con secciones verticales</strong> que guían al usuario a través del flujo de trabajo académico:</p>
+      <ol><li><strong>Hero / Cabecera</strong> - Marca y descripción de la plataforma</li><li><strong>Formulario de eventos</strong> - Crear/editar eventos (colapsable)</li><li><strong>Notificaciones</strong> - Mensajes de éxito/error con roles ARIA (<code>role="alert"</code>, <code>role="status"</code>)</li><li><strong>Búsqueda y grid de eventos</strong> - Barra de búsqueda con debounce (250ms) + tarjetas de evento</li><li><strong>Gestión de participantes</strong> - Formulario de alta + listado de participantes</li><li><strong>Inscripción</strong> - Selectores de evento y participante + botón de inscripción</li><li><strong>Lista de asistentes</strong> - Visualización de asistentes por evento seleccionado</li><li><strong>Footer</strong> - Marca secundaria</li></ol>
+      <h2>2.2 Diseño Responsive</h2><p>Los estilos CSS utilizan unidades relativas, <code>max-width</code> en contenedores, y grid layouts que se adaptan a distintos tamaños de pantalla. Las tarjetas de eventos se organizan en <code>grid-template-columns: repeat(auto-fill, minmax(...))</code>.</p>
+      <h2>2.3 Estados de UI</h2><p>Cada sección de datos implementa <strong>cuatro estados distintos</strong>:</p>
+      <table><thead><tr><th>Estado</th><th>Comportamiento visual</th><th>Rol ARIA</th></tr></thead><tbody><tr><td><code>loading</code></td><td>Spinner o texto "Loading…"</td><td><code>role="status"</code></td></tr><tr><td><code>empty</code></td><td>Mensaje contextual ("No participants yet")</td><td>Texto estático</td></tr><tr><td><code>error</code></td><td>Mensaje de error + botón de reintento</td><td><code>role="alert"</code></td></tr><tr><td><code>ready</code></td><td>Contenido de datos (listas, tarjetas)</td><td>Estructura semántica</td></tr></tbody></table>
+      <p>El componente <code>StatusPanel</code> abstrae esta lógica de estados de forma reutilizable, siendo compartido por <code>ParticipantSection</code> y <code>AttendeeSection</code>.</p>
+      <h2>2.4 Accesibilidad</h2><ul><li>Campos de formulario con <code>&lt;label&gt;</code> explícito y <code>htmlFor</code>/<code>id</code></li><li>Estados de error con <code>role="alert"</code> para anuncio automático por lectores de pantalla</li><li>Estados de carga con <code>role="status"</code> para notificación no intrusiva</li><li><code>aria-invalid</code> y <code>aria-describedby</code> en campos con error de validación</li><li>Navegación y estructura semántica con <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;header&gt;</code>, <code>&lt;footer&gt;</code></li><li>Botones con texto descriptivo (no solo íconos): "Edit Workshop", "Delete Workshop"</li></ul>
+    </section>
+
+    <hr />
+    <section>
+      <h1>3. Componentes React</h1>
+      <h2>3.1 Árbol de Componentes</h2>
+      <pre>App
+├── EventForm              (prop: event, busy, onCancel, onSubmit)
+├── [notice]               (condicional: success/error)
+├── [Sección de eventos]
+│   ├── search input       (debounce 250ms → API boundary)
+│   ├── loading/empty/error states
+│   └── event-grid
+│       └── event-card[]   (título, categoría, fecha, lugar, capacidad, acciones)
+├── ParticipantSection     (prop: loadParticipants, addParticipant)
+│   ├── StatusPanel        (loading/empty/error/ready)
+│   ├── [lista de participantes]
+│   └── [formulario de alta + validación cliente]
+├── EnrollmentSection      (prop: events, participants, registerParticipant)
+│   ├── selector de evento
+│   ├── selector de participante
+│   └── botón de inscripción + feedback
+└── AttendeeSection        (prop: eventId, loadAttendees, revision)
+    ├── StatusPanel        (loading/empty/error/ready)
+    └── [lista de asistentes]</pre>
+      <h2>3.2 Responsabilidades</h2>
+      <table><thead><tr><th>Componente</th><th>Responsabilidad</th><th>Patrón</th></tr></thead><tbody><tr><td><strong>App</strong></td><td>Estado global, coordinación entre secciones, debounce de búsqueda, guardias de concurrencia (<code>mutationRevision</code>)</td><td>Contenedor con prop-injection</td></tr><tr><td><strong>EventForm</strong></td><td>Formulario controlado de creación/edición, validación de capacidad (entero positivo)</td><td>Componente controlado</td></tr><tr><td><strong>StatusPanel</strong></td><td>Renderizado condicional de estados loading/empty/error/ready</td><td>Componente presentacional</td></tr><tr><td><strong>ParticipantSection</strong></td><td>Listado de participantes, formulario de alta, validación cliente (whitespace, email), guardia de race-condition (<code>participantRevision</code>), botón de reintento en error</td><td>Contenedor con prop-injection</td></tr><tr><td><strong>EnrollmentSection</strong></td><td>Selectores de evento/participante, discriminación de errores HTTP (409 duplicado, 409 capacidad, 404 no encontrado)</td><td>Contenedor con prop-injection</td></tr><tr><td><strong>AttendeeSection</strong></td><td>Listado de asistentes filtrado por evento, refresco por <code>revision</code>, botón de reintento en error</td><td>Contenedor con prop-injection</td></tr><tr><td><strong>eventsApi</strong></td><td>Adaptador fetch para CRUD de eventos: <code>getEvents(query)</code>, <code>createEvent</code>, <code>updateEvent</code>, <code>deleteEvent</code></td><td>Módulo de API</td></tr><tr><td><strong>participantsApi</strong></td><td>Adaptador fetch para participantes: <code>getParticipants(opts)</code>, <code>createParticipant</code>. Timeout por defecto (3000ms), <code>AbortController</code>, cancelación por señal</td><td>Módulo de API</td></tr><tr><td><strong>registrationsApi</strong></td><td>Adaptador fetch para inscripciones: <code>register(eventId, participantId)</code>, <code>getAttendees(eventId)</code></td><td>Módulo de API</td></tr></tbody></table>
+      <h2>3.3 Patrones de Concurrencia</h2><p>Dos mecanismos protegen contra condiciones de carrera en los dos flujos de lista asíncrona:</p><ol><li><strong>Eventos:</strong> <code>mutationRevision.useRef(0)</code> - se incrementa al crear/editar/eliminar. Una respuesta de lista anterior (cuyo <code>revision</code> no coincide con el actual) se descarta.</li><li><strong>Participantes:</strong> <code>participantRevision.useRef(0)</code> - mismo patrón para el flujo de participantes.</li><li><strong>Asistentes:</strong> <code>attendeeRevision</code> (estado, no ref) - se incrementa tras una inscripción exitosa, forzando la recarga de la lista de asistentes.</li></ol>
+    </section>
+
+    <hr />
+    <section>
+      <h1>4. Integración con API REST</h1><h2>4.1 Endpoints</h2>
+      <table><thead><tr><th>Método</th><th>Ruta</th><th>Código de respuesta</th><th>Descripción</th></tr></thead><tbody><tr><td><code>GET</code></td><td><code>/api/health</code></td><td>200</td><td>Health check: <code>{ status: "ok" }</code></td></tr><tr><td><code>GET</code></td><td><code>/api/events?search=</code></td><td>200</td><td>Lista eventos. Filtro opcional por título/descripción/categoría/lugar</td></tr><tr><td><code>GET</code></td><td><code>/api/events/:id</code></td><td>200 / 404</td><td>Obtener un evento por ID</td></tr><tr><td><code>POST</code></td><td><code>/api/events</code></td><td>201 / 400</td><td>Crear evento. Requiere: title, description, date, location, category, capacity</td></tr><tr><td><code>PUT</code></td><td><code>/api/events/:id</code></td><td>200 / 400 / 404 / 409</td><td>Actualizar evento. 409 si la capacidad es menor que los inscritos</td></tr><tr><td><code>DELETE</code></td><td><code>/api/events/:id</code></td><td>204 / 404</td><td>Eliminar evento y sus inscripciones asociadas</td></tr><tr><td><code>GET</code></td><td><code>/api/participants</code></td><td>200</td><td>Listar todos los participantes</td></tr><tr><td><code>POST</code></td><td><code>/api/participants</code></td><td>201 / 400 / 409</td><td>Crear participante. 409 si el email ya existe</td></tr><tr><td><code>POST</code></td><td><code>/api/events/:id/registrations</code></td><td>201 / 400 / 404 / 409</td><td>Inscribir participante. 409 si duplicado o capacidad llena</td></tr><tr><td><code>GET</code></td><td><code>/api/events/:id/attendees</code></td><td>200 / 404</td><td>Listar asistentes de un evento con sus datos completos</td></tr></tbody></table>
+      <h2>4.2 Contratos de Error</h2><p>Todas las respuestas de error siguen el formato <code>{ error: "mensaje descriptivo" }</code>:</p>
+      <table><thead><tr><th>Código HTTP</th><th>Causa</th><th>Ejemplo de mensaje</th></tr></thead><tbody><tr><td>400</td><td>Validación de entrada fallida</td><td><code>"title is required"</code></td></tr><tr><td>400</td><td>Body no es objeto JSON</td><td><code>"Request body must be a JSON object"</code></td></tr><tr><td>404</td><td>Recurso no encontrado</td><td><code>"Event not found"</code></td></tr><tr><td>409</td><td>Conflicto de negocio</td><td><code>"Email is already registered"</code>, <code>"Participant is already registered"</code>, <code>"Event capacity reached"</code>, <code>"Capacity cannot be lower than current registration count"</code></td></tr><tr><td>500</td><td>Error interno del servidor</td><td><code>"Internal server error"</code></td></tr></tbody></table>
+      <h2>4.3 Middleware de Error en Express</h2><p>El backend utiliza una cadena de middleware de error que discrimina por tipo de excepción:</p><pre>express.json parse error → 400 "Request body must be a JSON object"
+ValidationError          → 400 con mensaje de validación
+NotFoundError            → 404 con mensaje descriptivo
+ConflictError            → 409 con mensaje descriptivo
+Error genérico           → 500 "Internal server error"</pre>
+      <h2>4.4 Timeout y AbortController en el Cliente</h2><p>Los adaptadores de API del frontend implementan:</p><ul><li><strong>Timeout por defecto</strong> de 3000ms en <code>getParticipants()</code>. Si el servidor no responde en ese tiempo, la promesa se rechaza con <code>"Request timed out."</code>.</li><li><strong><code>AbortController</code></strong> interno con propagación de señal externa. Si el componente se desmonta durante una petición, la señal de <code>useEffect</code> (via <code>active</code> flag) cancela la petición.</li><li><strong>Señal externa opcional</strong> (<code>signal</code> en opciones) para control desde el llamador.</li><li><strong><code>timeoutMs: 0</code></strong> desactiva el timeout explícitamente.</li></ul>
+    </section>
+
+    <hr />
+    <section>
+      <h1>5. Pruebas Funcionales Manuales</h1><h2>5.1 Enfoque</h2><p>Las pruebas se realizan manualmente siguiendo el formato de la Práctica 8, Parte 9. Se verifica el comportamiento observable de la interfaz en un navegador y de la API REST desde PowerShell. Cada caso requiere una captura de su ejecución: navegador para frontend y terminal PowerShell para backend.</p><p>Las imágenes se deben almacenar en <code>docs/capturas/frontend/</code> y <code>docs/capturas/backend/</code>. Los transcriptos de PowerShell complementan la evidencia del backend, pero no reemplazan las capturas de terminal requeridas.</p>
+      <h2>5.2 Casos de Prueba del Frontend</h2>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Función/Acción</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>FE-01 Obtener eventos</td><td>Abrir AgendaU y visualizar la sección de eventos.</td><td>Aplicación con API disponible.</td><td>Se muestra la lista de eventos disponibles o el estado vacío correspondiente.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/frontend/fe-01-obtener-eventos.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Función/Acción</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>FE-02 Crear evento</td><td>Completar el formulario y seleccionar «Crear evento».</td><td>Título, descripción, fecha válida, ubicación, categoría y capacidad positiva.</td><td>Se informa la creación exitosa y el evento aparece en la lista.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/frontend/fe-02-crear-evento.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Función/Acción</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>FE-03 Editar evento</td><td>Seleccionar «Editar», modificar datos y guardar.</td><td>Evento existente; nueva ubicación o capacidad válida.</td><td>Se informa la actualización exitosa y la tarjeta muestra los datos modificados.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/frontend/fe-03-editar-evento.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Función/Acción</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>FE-04 Eliminar evento</td><td>Seleccionar «Eliminar» y confirmar la operación.</td><td>Evento de prueba existente.</td><td>Se informa la eliminación exitosa y el evento deja de figurar en la lista.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/frontend/fe-04-eliminar-evento.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Función/Acción</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>FE-05 Registrar participante</td><td>Completar el formulario de participantes y enviar.</td><td>Nombre y correo electrónico válidos.</td><td>El participante se incorpora al listado y se informa el registro exitoso.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/frontend/fe-05-registrar-participante.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Función/Acción</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>FE-06 Inscribir participante y consultar asistentes</td><td>Seleccionar un evento y un participante; inscribir y consultar asistentes.</td><td>Evento y participante existentes.</td><td>Se informa la inscripción exitosa y el participante se muestra en la lista de asistentes del evento seleccionado.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/frontend/fe-06-inscribir-y-consultar-asistentes.png</code></td></tr></tbody></table>
+      <h2>5.3 Casos de Prueba del Backend</h2>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Endpoint/Método</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>BE-01 Consultar eventos</td><td><code>GET /api/events</code></td><td>Sin cuerpo.</td><td>Respuesta <code>200</code> con una colección JSON de eventos.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/backend/be-01-consultar-eventos.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Endpoint/Método</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>BE-02 Registrar evento</td><td><code>POST /api/events</code></td><td>Evento con todos los campos requeridos y capacidad positiva.</td><td>Respuesta <code>201</code> con el evento creado.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/backend/be-02-registrar-evento.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Endpoint/Método</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>BE-03 Actualizar evento</td><td><code>PUT /api/events/:id</code></td><td>Identificador del evento creado y datos válidos actualizados.</td><td>Respuesta <code>200</code> con los datos actualizados.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/backend/be-03-actualizar-evento.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Endpoint/Método</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>BE-04 Eliminar evento</td><td><code>DELETE /api/events/:id</code></td><td>Identificador del evento de prueba.</td><td>Respuesta <code>204</code>; el recurso se elimina.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/backend/be-04-eliminar-evento.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Endpoint/Método</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>BE-05 Registrar participante</td><td><code>POST /api/participants</code></td><td>Nombre y correo electrónico únicos y válidos.</td><td>Respuesta <code>201</code> con el participante creado.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/backend/be-05-registrar-participante.png</code></td></tr></tbody></table>
+      <table class="case-table"><thead><tr><th>Prueba</th><th>Endpoint/Método</th><th>Entrada/Datos</th><th>Resultado esperado</th><th>Evidencia</th></tr></thead><tbody><tr><td>BE-06 Inscribir participante y consultar asistentes</td><td><code>POST /api/events/:id/registrations</code> y <code>GET /api/events/:id/attendees</code></td><td>Identificadores de evento y participante creados para la prueba.</td><td>Respuestas <code>201</code> y <code>200</code>; la lista de asistentes incluye al participante inscrito.</td><td class="evidence-pending">Captura pendiente: <code>docs/capturas/backend/be-06-inscribir-y-consultar-asistentes.png</code></td></tr></tbody></table>
+      <h2>5.4 Estado de la Evidencia</h2><p>Al momento de actualizar este documento, no se generaron imágenes de evidencia. Las pruebas frontend requieren capturas reales del navegador. Las pruebas backend requieren capturas reales de una ventana de PowerShell. El backend no estaba ejecutándose en <code>http://localhost:3001</code>; por ello, se preparó el script <code>docs/capturas/backend/ejecutar-pruebas-backend.ps1</code> para ejecutarlas posteriormente y producir los transcriptos verificables.</p>
+    </section>
+
+    <hr />
+    <section><h1>6. Conclusión</h1><p>AgendaU demuestra la integración full-stack de una aplicación web académica construida con principios de arquitectura limpia. La combinación de un frontend React con componentes inyectables por props, un backend Express con capas de servicio y repositorio separadas, y un plan de pruebas funcionales manuales sobre los flujos principales, constituye un entregable sólido para el trabajo final de la materia.</p><p>Las decisiones técnicas clave — monorepo con npm workspaces, persistencia JSON con escritura serializada, patrón prop-injection, pruebas funcionales manuales de frontend y backend, y manejo explícito de timeout/cancelación en los adaptadores de API — reflejan una comprensión integral del desarrollo web moderno aplicado a un caso de uso real: la gestión de eventos y participantes en un entorno universitario.</p></section>
+  </main>
+</body>
+</html>

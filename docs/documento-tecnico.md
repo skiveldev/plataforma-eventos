@@ -19,7 +19,7 @@ AgendaU es una aplicación web full-stack organizada como un **monorepo npm work
 | Frontend | React + Vite | 19 / 7 |
 | Backend | Express | 5 |
 | Persistencia | JSON (archivo local) | — |
-| Pruebas | Vitest + Testing Library + Supertest | 3 |
+| Pruebas | Pruebas funcionales manuales | Práctica 8, Parte 9 |
 | Tooling | npm workspaces | 10+ |
 | Lenguaje | JavaScript (ES Modules) | ES2022+ |
 
@@ -42,7 +42,7 @@ agendau/
 │           └── db.json            # Almacenamiento persistente
 ├── frontend/
 │   ├── package.json
-│   ├── vite.config.js             # Vite + Vitest (jsdom, allowOnly: false)
+│   ├── vite.config.js             # Configuración de Vite
 │   └── src/
 │       ├── main.jsx               # Entrada React DOM
 │       ├── App.jsx                # Componente raíz: estado global, grid de eventos, secciones
@@ -60,8 +60,9 @@ agendau/
 │       └── test/
 │           └── setup.js           # Configuración jsdom + Testing Library
 └── docs/
-    ├── evidence/                  # Evidencia de ejecución de pruebas (12 capturas)
-    │   └── README.md              # Tabla de referencia de evidencias
+    ├── capturas/
+    │   ├── frontend/              # Capturas del navegador de las pruebas manuales
+    │   └── backend/               # Capturas de PowerShell y transcriptos de API
     └── documento-tecnico.md       # Este documento
 ```
 
@@ -81,7 +82,7 @@ export default function App({
 })
 ```
 
-En pruebas, se inyectan mocks de Vitest (`vi.fn()`) sin que el componente necesite conocer la implementación real de fetch.
+Esta separación permite verificar cada flujo de la interfaz de forma aislada y mantener desacoplada la comunicación con la API.
 
 ---
 
@@ -230,65 +231,74 @@ Los adaptadores de API del frontend implementan:
 
 ---
 
-## 5. Estrategia de Pruebas
+## 5. Pruebas Funcionales Manuales
 
 ### 5.1 Enfoque
 
-El proyecto sigue la metodología **Strict TDD** (Test-Driven Development estricto):
+Las pruebas se realizan manualmente siguiendo el formato de la Práctica 8, Parte 9. Se verifica el comportamiento observable de la interfaz en un navegador y de la API REST desde PowerShell. Cada caso requiere una captura de su ejecución: navegador para frontend y terminal PowerShell para backend.
 
-1. **RED:** Escribir la prueba primero, verificar que falle (componente/función no existe)
-2. **GREEN:** Implementación mínima para que la prueba pase
-3. **REFACTOR:** Mejorar el código sin cambiar comportamiento, pruebas siguen verdes
-4. **TRIANGULATE:** Casos adicionales para validar robustez (varios ejemplos de email, capacities, etc.)
+Las imágenes se deben almacenar en `docs/capturas/frontend/` y `docs/capturas/backend/`. Los transcriptos de PowerShell complementan la evidencia del backend, pero no reemplazan las capturas de terminal requeridas.
 
-### 5.2 Capas de Prueba
+### 5.2 Casos de Prueba del Frontend
 
-| Capa | Runner | Alcance | Cantidad |
-|------|--------|---------|----------|
-| **Unitaria (API adapters)** | Vitest | Contratos HTTP: método, headers, body, parseo, propagación de errores, timeout, cancelación | 18 (12 participantsApi + 6 registrationsApi) |
-| **Integración (componentes)** | Vitest + React Testing Library | Renderizado de componentes con mocks de API inyectados por props, interacciones de usuario, flujos de estado | 49 (18 App + 15 ParticipantSection + 6 EnrollmentSection + 6 AttendeeSection + 4 StatusPanel) |
-| **Integración (backend)** | Vitest + Supertest | Peticiones HTTP reales contra la app Express con base de datos temporal en `tmpdir()` | 12 (11 API + 1 repositorio) |
+| Prueba | Función/Acción | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|----------------|---------------|--------------------|-----------|
+| FE-01 Obtener eventos | Abrir AgendaU y visualizar la sección de eventos. | Aplicación con API disponible. | Se muestra la lista de eventos disponibles o el estado vacío correspondiente. | `docs/capturas/frontend/fe-01-obtener-eventos.png` (pendiente) |
 
-**Total: 79 pruebas (67 frontend + 12 backend).**
+| Prueba | Función/Acción | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|----------------|---------------|--------------------|-----------|
+| FE-02 Crear evento | Completar el formulario y seleccionar «Crear evento». | Título, descripción, fecha válida, ubicación, categoría y capacidad positiva. | Se informa la creación exitosa y el evento aparece en la lista. | `docs/capturas/frontend/fe-02-crear-evento.png` (pendiente) |
 
-### 5.3 Ejemplos de Pruebas Representativas
+| Prueba | Función/Acción | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|----------------|---------------|--------------------|-----------|
+| FE-03 Editar evento | Seleccionar «Editar», modificar datos y guardar. | Evento existente; nueva ubicación o capacidad válida. | Se informa la actualización exitosa y la tarjeta muestra los datos modificados. | `docs/capturas/frontend/fe-03-editar-evento.png` (pendiente) |
 
-| # | Tipo | Archivo | Prueba | Categoría |
-|---|------|---------|--------|-----------|
-| FE-01 | Frontend | `App.test.jsx` | "creates an event and adds it to the list" | Creación exitosa |
-| FE-02 | Frontend | `App.test.jsx` | "searches through the API boundary" | Búsqueda con API |
-| FE-03 | Frontend | `ParticipantSection.test.jsx` | "calls addParticipant with name and email" | Alta de participante |
-| FE-04 | Frontend | `ParticipantSection.test.jsx` | "shows validation error for malformed email" | Validación cliente |
-| FE-05 | Frontend | `EnrollmentSection.test.jsx` | "calls registerParticipant and shows success" | Inscripción exitosa |
-| FE-06 | Frontend | `AttendeeSection.test.jsx` | "lists attendee names and emails" | Lista de asistentes |
-| BE-01 | Backend | `app.test.js` | "searches events" | GET con filtro |
-| BE-02 | Backend | `app.test.js` | "rejects invalid event data" | POST con validación |
-| BE-03 | Backend | `app.test.js` | "creates and lists participants" | POST + GET participante |
-| BE-04 | Backend | `app.test.js` | "prevents duplicate registrations" | POST con conflicto 409 |
-| BE-05 | Backend | `app.test.js` | "rejects capacity below current registrations" | PUT con regla de negocio |
-| BE-06 | Backend | `app.test.js` | "registers a participant and lists attendees" | POST + GET asistentes |
+| Prueba | Función/Acción | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|----------------|---------------|--------------------|-----------|
+| FE-04 Eliminar evento | Seleccionar «Eliminar» y confirmar la operación. | Evento de prueba existente. | Se informa la eliminación exitosa y el evento deja de figurar en la lista. | `docs/capturas/frontend/fe-04-eliminar-evento.png` (pendiente) |
 
-Las capturas de terminal de cada prueba se encuentran en `docs/evidence/` con su tabla de referencia en `docs/evidence/README.md`.
+| Prueba | Función/Acción | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|----------------|---------------|--------------------|-----------|
+| FE-05 Registrar participante | Completar el formulario de participantes y enviar. | Nombre y correo electrónico válidos. | El participante se incorpora al listado y se informa el registro exitoso. | `docs/capturas/frontend/fe-05-registrar-participante.png` (pendiente) |
 
-### 5.4 Patrones de Prueba Clave
+| Prueba | Función/Acción | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|----------------|---------------|--------------------|-----------|
+| FE-06 Inscribir participante y consultar asistentes | Seleccionar un evento y un participante; inscribir y consultar asistentes. | Evento y participante existentes. | Se informa la inscripción exitosa y el participante se muestra en la lista de asistentes del evento seleccionado. | `docs/capturas/frontend/fe-06-inscribir-y-consultar-asistentes.png` (pendiente) |
 
-- **Prop-injection para aislamiento:** Cada componente recibe sus dependencias como props con valores por defecto, permitiendo inyectar `vi.fn()` en pruebas sin mockear módulos globales.
-- **`deferred()` para race conditions:** Las pruebas de concurrencia utilizan un helper `deferred()` que crea una promesa con `resolve` externo, permitiendo controlar el orden de resolución de respuestas asíncronas.
-- **`vi.useFakeTimers()` para timeouts:** Las pruebas de timeout/cancelación usan timers falsos para validar comportamiento temporal de forma determinista sin esperas reales.
-- **Base de datos temporal en backend:** Cada prueba de integración del backend crea una carpeta temporal única con `mkdtemp()` y un archivo `db.json` pre-poblado, garantizando aislamiento completo entre pruebas.
-- **`allowOnly: false` en Vitest:** La configuración prohíbe `describe.only` / `it.only` para prevenir que pruebas enfocadas se cometan accidentalmente.
+### 5.3 Casos de Prueba del Backend
 
-### 5.5 Suite Completa
+| Prueba | Endpoint/Método | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|-----------------|---------------|--------------------|-----------|
+| BE-01 Consultar eventos | `GET /api/events` | Sin cuerpo. | Respuesta `200` con una colección JSON de eventos. | `docs/capturas/backend/be-01-consultar-eventos.png` (pendiente) |
 
-```bash
-npm test    # 79/79 passed (67 frontend + 12 backend)
-npm run build  # Vite production build + backend syntax check — exit 0
-```
+| Prueba | Endpoint/Método | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|-----------------|---------------|--------------------|-----------|
+| BE-02 Registrar evento | `POST /api/events` | Evento con todos los campos requeridos y capacidad positiva. | Respuesta `201` con el evento creado. | `docs/capturas/backend/be-02-registrar-evento.png` (pendiente) |
+
+| Prueba | Endpoint/Método | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|-----------------|---------------|--------------------|-----------|
+| BE-03 Actualizar evento | `PUT /api/events/:id` | Identificador del evento creado y datos válidos actualizados. | Respuesta `200` con los datos actualizados. | `docs/capturas/backend/be-03-actualizar-evento.png` (pendiente) |
+
+| Prueba | Endpoint/Método | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|-----------------|---------------|--------------------|-----------|
+| BE-04 Eliminar evento | `DELETE /api/events/:id` | Identificador del evento de prueba. | Respuesta `204`; el recurso se elimina. | `docs/capturas/backend/be-04-eliminar-evento.png` (pendiente) |
+
+| Prueba | Endpoint/Método | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|-----------------|---------------|--------------------|-----------|
+| BE-05 Registrar participante | `POST /api/participants` | Nombre y correo electrónico únicos y válidos. | Respuesta `201` con el participante creado. | `docs/capturas/backend/be-05-registrar-participante.png` (pendiente) |
+
+| Prueba | Endpoint/Método | Entrada/Datos | Resultado esperado | Evidencia |
+|---------|-----------------|---------------|--------------------|-----------|
+| BE-06 Inscribir participante y consultar asistentes | `POST /api/events/:id/registrations` y `GET /api/events/:id/attendees` | Identificadores de evento y participante creados para la prueba. | Respuestas `201` y `200`; la lista de asistentes incluye al participante inscrito. | `docs/capturas/backend/be-06-inscribir-y-consultar-asistentes.png` (pendiente) |
+
+### 5.4 Estado de la Evidencia
+
+Al momento de actualizar este documento, no se generaron imágenes de evidencia. Las pruebas frontend requieren capturas reales del navegador. Las pruebas backend requieren capturas reales de una ventana de PowerShell. El backend no estaba ejecutándose en `http://localhost:3001`; por ello, se preparó el script `docs/capturas/backend/ejecutar-pruebas-backend.ps1` para ejecutarlas posteriormente y producir los transcriptos verificables.
 
 ---
 
 ## 6. Conclusión
 
-AgendaU demuestra la integración full-stack de una aplicación web académica construida con principios de arquitectura limpia y desarrollo guiado por pruebas. La combinación de un frontend React con componentes inyectables por props, un backend Express con capas de servicio y repositorio separadas, y una suite de 79 pruebas con cobertura de estados de UI, flujos de negocio y condiciones de borde, constituye un entregable sólido para el trabajo final de la materia.
+AgendaU demuestra la integración full-stack de una aplicación web académica construida con principios de arquitectura limpia. La combinación de un frontend React con componentes inyectables por props, un backend Express con capas de servicio y repositorio separadas, y un plan de pruebas funcionales manuales sobre los flujos principales, constituye un entregable sólido para el trabajo final de la materia.
 
-Las decisiones técnicas clave — monorepo con npm workspaces, persistencia JSON con escritura serializada, patrón prop-injection para testeabilidad, Strict TDD con 67 pruebas de frontend y 12 de backend, y manejo explícito de timeout/cancelación en los adaptadores de API — reflejan una comprensión integral del desarrollo web moderno aplicado a un caso de uso real: la gestión de eventos y participantes en un entorno universitario.
+Las decisiones técnicas clave — monorepo con npm workspaces, persistencia JSON con escritura serializada, patrón prop-injection, pruebas funcionales manuales de frontend y backend, y manejo explícito de timeout/cancelación en los adaptadores de API — reflejan una comprensión integral del desarrollo web moderno aplicado a un caso de uso real: la gestión de eventos y participantes en un entorno universitario.

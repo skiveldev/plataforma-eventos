@@ -10,6 +10,15 @@
       "capacity": 30
     },
     {
+      "id": "evt-2",
+      "title": "Research Methods Seminar",
+      "description": "An introduction to evidence-based academic research.",
+      "date": "2026-09-03T16:00:00.000Z",
+      "location": "Main Auditorium",
+      "category": "Seminar",
+      "capacity": 80
+    },
+    {
       "id": "evt-3",
       "title": "Student Project Showcase",
       "description": "Final-year students present their software projects.",
@@ -17,15 +26,6 @@
       "location": "Innovation Hall",
       "category": "Exhibition",
       "capacity": 120
-    },
-    {
-      "id": "af31be33-f3a0-4079-af42-51213fbdae7d",
-      "title": "seminario",
-      "description": "seminario de software libre ",
-      "date": "2026-07-13",
-      "location": "universidad",
-      "category": "sofware libre",
-      "capacity": 100
     }
   ],
   "participants": [
@@ -33,6 +33,11 @@
       "id": "par-1",
       "name": "Alex Morgan",
       "email": "alex.morgan@example.edu"
+    },
+    {
+      "id": "9c03596b-b02d-4d2f-b409-a5987c1cc694",
+      "email": "carlos.lopez.121435@test.edu",
+      "name": "Carlos López"
     }
   ],
   "registrations": [
@@ -41,6 +46,12 @@
       "eventId": "evt-1",
       "participantId": "par-1",
       "createdAt": "2026-07-11T12:00:00.000Z"
+    },
+    {
+      "id": "0a3a4c0b-3202-4672-a9e5-d73af0bbe268",
+      "eventId": "evt-1",
+      "participantId": "9c03596b-b02d-4d2f-b409-a5987c1cc694",
+      "createdAt": "2026-07-12T10:14:36.685Z"
     }
   ]
 }
